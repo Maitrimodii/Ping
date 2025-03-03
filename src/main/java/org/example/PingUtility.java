@@ -26,16 +26,14 @@ public class PingUtility {
 
         System.out.println("3. Nslookup");
 
-        System.out.println("4. SSH");
-
-        System.out.println("Enter your choice(1-4): ");
+        System.out.println("Enter your choice(1-3): ");
 
         var choice = scanner.nextInt();
         scanner.nextLine();
 
-        if(choice < 1 || choice > 4)
+        if(choice < 1 || choice > 3)
         {
-            LOGGER.warning("Invalid choice. Exiting...");
+            LOGGER.warning(INVALID_CHOICE);
             return;
         }
 
@@ -47,14 +45,6 @@ public class PingUtility {
 
         for (var host : hosts)
         {
-
-            if(!isValidateHost(host))
-            {
-                LOGGER.warning(String.format(INVALID_HOST_MESSAGE, host));
-
-                continue;
-            }
-
             executeCommand(choice, host);
         }
 
@@ -77,23 +67,9 @@ public class PingUtility {
                 nslookup(host);
                 break;
 
-            case 4:
-                ssh(host);
-                break;
-
             default:
                 LOGGER.warning(UNSUPPORTED_COMMAND_MESSAGE + choice);
         }
-    }
-
-    /**
-     * Validate host using a regex pattern
-     * @param host
-     * @return
-     */
-    private static boolean isValidateHost(String host)
-    {
-        return host.matches(HOST_REGEX);
     }
 
     /**
@@ -104,7 +80,7 @@ public class PingUtility {
     {
         var command = new ArrayList<String>(Arrays.asList(PING_COMMAND, PING_FLAGS, String.valueOf(PING_COUNT), host));
 
-        executeCommand("ping", command, host);
+        executeCommand(PING_COMMAND, command, host);
     }
 
     /**
@@ -115,7 +91,7 @@ public class PingUtility {
     {
         var command = new ArrayList<String>(Arrays.asList(TRACEROUTE_COMMAND, host));
 
-        executeCommand("traceroute", command, host);
+        executeCommand(TRACEROUTE_COMMAND, command, host);
     }
 
     /**
@@ -126,18 +102,7 @@ public class PingUtility {
     {
         var command = new ArrayList<String>(Arrays.asList(NSLOOKUP_COMMAND, host));
 
-        executeCommand("nslookup", command, host);
-    }
-
-    /**
-     * SSH command for given host
-     * @param host
-     */
-    private static void ssh(String host)
-    {
-        var command = new ArrayList<String>(Arrays.asList(SSH_COMMAND, host));
-
-        executeCommand("ssh", command, host);
+        executeCommand(NSLOOKUP_COMMAND, command, host);
     }
 
     /**
@@ -168,7 +133,7 @@ public class PingUtility {
                 }
             }
 
-            // Wait for the process to complete within specified timeout
+            // Wait for the process to complete within specified time
             var completed = process.waitFor(COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             //handle process completion

@@ -24,9 +24,11 @@ public class Constants
 
     protected static final int COMMAND_TIMEOUT_SECONDS = 10;
 
-    //Regex for host validations
-    protected static final String HOST_REGEX = "^([a-zA-Z0-9.-]+|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})$";
+    protected static final String INVALID_CHOICE = "Invalid choice:  Exiting...";
 
+    //Regex for host validations
+    protected static final String HOST_REGEX = "^([a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+|" +
+            "((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$";
     protected static final String INVALID_HOST_MESSAGE = "Invalid host: ";
 
     protected static final String UNSUPPORTED_COMMAND_MESSAGE = "Unsupported command: ";
